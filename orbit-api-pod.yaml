@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: orbit-api
+  labels:
+    app: orbit-api
+spec:
+  containers:
+    - name: api
+      image: node:18-alpine
+      command: ["node", "-e"]
+      args:
+        - |
+          const http = require('http');
+          const server = http.createServer((req, res) => {
+            if (req.url === '/health') {
+              res.end('ok');
+            } else if (req.url === '/version') {
+              res.end('orbit v0.1');
+            } else {
+              res.statusCode = 404;
+              res.end('not found');
+            }
+          });
+          server.listen(3000);
+      ports:
+        - containerPort: 3000
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 3000
+        initialDelaySeconds: 5
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /health
+          port: 3000
+        initialDelaySeconds: 5
+        periodSeconds: 5
+

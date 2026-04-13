@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orbit-api
+  namespace: orbit-dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: orbit-api
+  template:
+    metadata:
+      labels:
+        app: orbit-api
+    spec:
+      containers:
+        - name: api
+          image: idlure/orbit-api:latest
+          command: ["node", "-e"]
+          args:
+            - |
+              const http = require('http');
+              const server = http.createServer((req, res) => {
+                if (req.url === '/health') {
+                  res.end('ok');
+                } else if (req.url === '/version') {
+                  res.end('orbit v0.1');
+                } else {
+                  res.statusCode = 404;
+                  res.end('not found');
+                }
+              });
+              server.listen(3000);
+
+          ports:
+            - containerPort: 3000
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
