@@ -1,3 +1,6 @@
+permissions:
+  contents: write
+
 name: CI-CD Pipeline
 
 on:
@@ -25,3 +28,15 @@ jobs:
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/orbit-api:${{ env.TAG }}
+
+    - name: Update Kubernetes manifest
+      run: |  
+        sed -i "s|image: idlure/orbit-api:.*|image: idlure/orbit-api:${{ github.sha }}|g" orbit-api-deployment.yaml
+
+    - name: Commit & push changes
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Update image to ${{ github.sha }}"
+        git push
