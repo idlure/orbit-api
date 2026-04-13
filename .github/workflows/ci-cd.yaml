@@ -30,7 +30,8 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/orbit-api:${{ env.TAG }}
 
     - name: Update Kubernetes manifest
-      run: |  
+      working-directory: Orbit/orbit-manifests
+      run: |
         sed -i "s|image: idlure/orbit-api:.*|image: idlure/orbit-api:${{ github.sha }}|g" orbit-api-deployment.yaml
 
     - name: Commit & push changes
