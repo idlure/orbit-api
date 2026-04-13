@@ -18,12 +18,10 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Set image tag
-      id: vars
       run: echo "TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
     - name: Build Docker image
-      working-directory: ./app/backend
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/orbit-api:<commit-sha> .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/orbit-api:${{ env.TAG }} ./app/backend
 
     - name: Push Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/orbit-api:<commit-sha>
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/orbit-api:${{ env.TAG }}
