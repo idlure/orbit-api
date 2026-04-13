@@ -23,7 +23,7 @@ jobs:
 
     - name: Build Docker image
       working-directory: ./app/backend
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/orbit-api:latest .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/orbit-api:<commit-sha> .
 
     - name: Push Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/orbit-api:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/orbit-api:<commit-sha>
