@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: idlure/orbit-api:b0770ff99d803ae8e4784da904a7d0446f171ac7
+          image: idlure/orbit-api:49a2478c4ba54c37487eafa6ac898e6215810b39
           command: ["node", "-e"]
           args:
             - |
