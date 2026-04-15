@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: api
-          image: idlure/orbit-api:
+          image: idlure/orbit-api:latest
+          imagePullPolicy: Always
           command: ["node", "-e"]
           args:
             - |
