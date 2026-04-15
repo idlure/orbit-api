@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'orbit-manifests/**'
 
 jobs:
   build-and-push:
