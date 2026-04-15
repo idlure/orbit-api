@@ -32,7 +32,7 @@ jobs:
     - name: Update Kubernetes manifest
       working-directory: orbit-manifests
       run: |
-        sed -i "s|image: idlure/orbit-api:.*|image: idlure/orbit-api:${{ github.sha }}|g" orbit-api-deployment.yaml
+        sed -i "s|image: idlure/orbit-api:.*|image: idlure/orbit-api:${IMAGE_TAG}|g" orbit-api-deployment.yaml
 
     - name: Commit & push changes
       run: |
