@@ -5,6 +5,7 @@ metadata:
   namespace: orbit-dev
 spec:
   replicas: 2
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: orbit-api
